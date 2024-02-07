@@ -18,6 +18,7 @@ func NewCompletedRouter() chi.Router {
 
 	r.Handle("/login", templ.Handler(pages.Login(courses.ListCourses())))
 	r.Post("/login", loginPostHandlerFunc)
+	r.Post("/logout", logoutPostHandlerFunc)
 
 	r.Group(func(r chi.Router) {
 		r.Use(tokenAuthMiddleware)

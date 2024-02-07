@@ -6,5 +6,8 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/templates/shared"
 templ Home(){
     @shared.Page("Home"){
         @partials.Table()
+        <form action="/logout" method="POST">
+        <button type="submit" class="btn btn-blue">logout</button>
+        </form>
     }
 }

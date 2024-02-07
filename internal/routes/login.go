@@ -40,3 +40,16 @@ func loginPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }
+
+func logoutPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "token",         // The name of the token cookie set during login
+		Value:    "",              // Clear the token value
+		Expires:  time.Unix(0, 0), // Set the expiration time to the past
+		MaxAge:   -1,              // Immediately expire the cookie
+		HttpOnly: true,            // Make the cookie inaccessible to JavaScript running in the browser
+		Path:     "/",             // Ensure the cookie is deleted for the whole domain
+	})
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
