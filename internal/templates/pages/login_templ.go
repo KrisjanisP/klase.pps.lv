@@ -15,10 +15,8 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 
 func selection(courses []models.Course) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_selection_329b`,
-		Function: `function __templ_selection_329b(courses){alert("Hello")
-
-    document.addEventListener('DOMContentLoaded', function() {
+		Name: `__templ_selection_c817`,
+		Function: `function __templ_selection_c817(courses){document.addEventListener('DOMContentLoaded', function() {
         const groupSelect = document.getElementById('group-select');
         const nameSelect = document.getElementById('student-select');
 
@@ -40,8 +38,8 @@ func selection(courses []models.Course) templ.ComponentScript {
         });
     });
 }`,
-		Call:       templ.SafeScript(`__templ_selection_329b`, courses),
-		CallInline: templ.SafeScriptInline(`__templ_selection_329b`, courses),
+		Call:       templ.SafeScript(`__templ_selection_c817`, courses),
+		CallInline: templ.SafeScriptInline(`__templ_selection_c817`, courses),
 	}
 }
 
