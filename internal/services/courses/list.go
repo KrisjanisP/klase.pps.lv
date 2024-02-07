@@ -1,4 +1,4 @@
-package groups
+package courses
 
 import (
 	"encoding/json"
