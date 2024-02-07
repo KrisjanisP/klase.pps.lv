@@ -6,20 +6,8 @@ import (
 
 	"github.com/KrisjanisP/klase.pps.lv/internal/config"
 	"github.com/KrisjanisP/klase.pps.lv/internal/models"
-	"github.com/KrisjanisP/klase.pps.lv/internal/templates/pages"
-	"github.com/a-h/templ"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/go-chi/chi"
 )
-
-func getLoginRouter() chi.Router {
-	r := chi.NewRouter()
-
-	r.Handle("/login", templ.Handler(pages.Login(make([]models.Course, 0))))
-	r.Post("/login", loginPostHandlerFunc)
-
-	return r
-}
 
 func loginPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	// Example: User authentication logic goes here.

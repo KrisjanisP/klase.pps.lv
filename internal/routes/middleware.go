@@ -1,4 +1,4 @@
-package middleware
+package routes
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 // Middleware to validate token
-func TokenAuthMiddleware(next http.Handler) http.Handler {
+func tokenAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("token")
 		if err != nil {
