@@ -1,16 +1,12 @@
-package users
+package students
 
 import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 
-func ListUsers() []models.Student {
+func ListStudents() []models.Student {
 	return []models.Student{
 		{
-			Name: "Krisjanis",
-			Age:  20,
-		},
-		{
-			Name: "Janis",
-			Age:  20,
+			Names:    []string{},
+			Password: "asdf",
 		},
 	}
 }

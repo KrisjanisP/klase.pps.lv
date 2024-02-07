@@ -4,13 +4,13 @@ import (
 	"log"
 
 	"github.com/KrisjanisP/klase.pps.lv/internal/services/courses"
-	"github.com/KrisjanisP/klase.pps.lv/internal/services/users"
+	users "github.com/KrisjanisP/klase.pps.lv/internal/services/students"
 )
 
 func main() {
 	var x = courses.ListCourses()
 	log.Println(x)
 
-	var y = users.ListUsers()
+	var y = users.ListStudents()
 	log.Println(y)
 }
