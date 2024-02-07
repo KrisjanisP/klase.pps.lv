@@ -15,30 +15,40 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 
 func selection(courses []models.Course) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_selection_c817`,
-		Function: `function __templ_selection_c817(courses){document.addEventListener('DOMContentLoaded', function() {
+		Name: `__templ_selection_c306`,
+		Function: `function __templ_selection_c306(courses){document.addEventListener('DOMContentLoaded', function() {
         const groupSelect = document.getElementById('group-select');
         const nameSelect = document.getElementById('student-select');
 
+		function findGroupStudents(groupID) {
+			for(var i = 0; i < courses.length; i++) {
+				if (courses[i].ID === groupID) {
+					return courses[i].StudentNames;
+				}
+			}
+		}
+
         groupSelect.addEventListener('change', function() {
             const selectedGroup = this.value;
-            // const names = groupsWithNames[selectedGroup] || [];
-
-			console.log(courses)
+			const students = findGroupStudents(selectedGroup);
             
-            // // Clear current options in nameSelect
-            // nameSelect.innerHTML = '<option value="">Select Name</option>';
-            // nameSelect.disabled = names.length === 0;
+            // Clear current options in nameSelect
+            nameSelect.innerHTML = '<option selected>Izvēlies sevi</option>';
+            nameSelect.disabled = students.length === 0;
 
-            // // Populate the nameSelect dropdown with names based on selected group
-            // names.forEach(function(name) {
-            //     const option = new Option(name, name);
-            //     nameSelect.add(option);
-            // });
+            // Populate the nameSelect dropdown with names based on selected group
+            students.forEach(function(studentNames) {
+				let fullName = studentNames[0];
+				for (let i = 1; i < studentNames.length; i++) {
+					fullName += ' ' + studentNames[i];
+				}
+                const option = new Option(fullName, JSON.stringify(studentNames));
+                nameSelect.add(option);
+            });
         });
     });}`,
-		Call:       templ.SafeScript(`__templ_selection_c817`, courses),
-		CallInline: templ.SafeScriptInline(`__templ_selection_c817`, courses),
+		Call:       templ.SafeScript(`__templ_selection_c306`, courses),
+		CallInline: templ.SafeScriptInline(`__templ_selection_c306`, courses),
 	}
 }
 
@@ -108,7 +118,7 @@ func Login(courses []models.Course) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(course.ID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/pages/login.templ`, Line: 47, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/pages/login.templ`, Line: 57, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -137,39 +147,12 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option> <option value=\"C-1-1-P1\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var9 := `Jānis Bērziņš`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option> <option value=\"C-1-2-C1\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var10 := `Pēteris Kalniņš`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option> <option value=\"C-1-3-P2\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var11 := `Anna Liepiņa`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option></select></div><div><label for=\"password\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var12 := `Parole`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
+			templ_7745c5c3_Var9 := `Parole`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -177,8 +160,8 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var13 := `Pieslēgties`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
+			templ_7745c5c3_Var10 := `Pieslēgties`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
