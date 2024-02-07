@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/KrisjanisP/klase.pps.lv/internal/models"
 	"github.com/KrisjanisP/klase.pps.lv/internal/templates/pages"
 	"github.com/a-h/templ"
 	"github.com/dgrijalva/jwt-go"
@@ -33,7 +34,7 @@ func main() {
 	fs := http.StripPrefix("/static/", http.FileServer(http.Dir("./internal/assets")))
 	r.Handle("/static/*", fs) // Use /* to match all files under /static/
 
-	r.Handle("/", templ.Handler(pages.Login()))
+	r.Handle("/", templ.Handler(pages.Login(make([]models.Course, 0))))
 	r.Handle("/home", templ.Handler(pages.Home()))
 
 	r.Post("/login", LoginHandler)

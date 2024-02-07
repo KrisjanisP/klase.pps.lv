@@ -11,8 +11,41 @@ import "io"
 import "bytes"
 
 import "github.com/KrisjanisP/klase.pps.lv/internal/templates/shared"
+import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 
-func Login() templ.Component {
+func selection(courses []models.Course) templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_selection_329b`,
+		Function: `function __templ_selection_329b(courses){alert("Hello")
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const groupSelect = document.getElementById('group-select');
+        const nameSelect = document.getElementById('student-select');
+
+        groupSelect.addEventListener('change', function() {
+            const selectedGroup = this.value;
+            // const names = groupsWithNames[selectedGroup] || [];
+
+			console.log(courses)
+            
+            // // Clear current options in nameSelect
+            // nameSelect.innerHTML = '<option value="">Select Name</option>';
+            // nameSelect.disabled = names.length === 0;
+
+            // // Populate the nameSelect dropdown with names based on selected group
+            // names.forEach(function(name) {
+            //     const option = new Option(name, name);
+            //     nameSelect.add(option);
+            // });
+        });
+    });
+}`,
+		Call:       templ.SafeScript(`__templ_selection_329b`, courses),
+		CallInline: templ.SafeScriptInline(`__templ_selection_329b`, courses),
+	}
+}
+
+func Login(courses []models.Course) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -31,7 +64,15 @@ func Login() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><div class=\"flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0\"><a href=\"#\" class=\"flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a><div class=\"w-full bg-white rounded-lg border dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700\"><div class=\"p-6 space-y-4 md:space-y-6 sm:p-8\"><h1 class=\"text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white\">Prieks tevi redzēt!</h1><form class=\"space-y-4 md:space-y-6\" action=\"/login\" method=\"POST\"><div><label for=\"group\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Grupa</label> <select id=\"group\" class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>Izvēlies savu grupu</option> <option value=\"C-1-1-P1\">C-1-1-P1</option> <option value=\"C-1-2-C1\">C-1-2-C1</option> <option value=\"C-1-3-P2\">C-1-3-P2</option></select></div><div><label for=\"student\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Skolēns</label> <select id=\"student\" class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>Izvēlies sevi</option> <option value=\"C-1-1-P1\">Jānis Bērziņš</option> <option value=\"C-1-2-C1\">Pēteris Kalniņš</option> <option value=\"C-1-3-P2\">Anna Liepiņa</option></select></div><div><label for=\"password\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Parole</label> <input type=\"password\" name=\"password\" id=\"password\" placeholder=\"••••••••\" class=\"bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\" required=\"\"></div><button type=\"submit\" class=\"w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800\">Pieslēgties</button></form></div></div><a href=\"#\" class=\"invisible flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a></div></section>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><div class=\"flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0\"><a href=\"#\" class=\"flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a><div class=\"w-full bg-white rounded-lg border dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700\"><div class=\"p-6 space-y-4 md:space-y-6 sm:p-8\"><h1 class=\"text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white\">Prieks tevi redzēt!</h1><form class=\"space-y-4 md:space-y-6\" action=\"/login\" method=\"POST\"><div><label for=\"group\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Grupa</label> <select id=\"group-select\" class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>Izvēlies savu grupu</option> <option value=\"C-1-1-P1\">C-1-1-P1</option> <option value=\"C-1-2-C1\">C-1-2-C1</option> <option value=\"C-1-3-P2\">C-1-3-P2</option></select></div><div><label for=\"student\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Skolēns</label> <select id=\"student-select\" disabled class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>Izvēlies sevi</option> <option value=\"C-1-1-P1\">Jānis Bērziņš</option> <option value=\"C-1-2-C1\">Pēteris Kalniņš</option> <option value=\"C-1-3-P2\">Anna Liepiņa</option></select></div><div><label for=\"password\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">Parole</label> <input type=\"password\" name=\"password\" id=\"password\" placeholder=\"••••••••\" class=\"bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\" required=\"\"></div><button type=\"submit\" class=\"w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800\">Pieslēgties</button></form></div></div><a href=\"#\" class=\"invisible flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = selection(courses).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
