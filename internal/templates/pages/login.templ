@@ -16,13 +16,24 @@ script selection(courses []models.Course) {
 			}
 		}
 
-        groupSelect.addEventListener('change', function() {
-            const selectedGroup = this.value;
+		function refreshGroupOptions() {
+			groupSelect.innerHTML = '<option selected disabled hidden>Izvēlies savu grupu</option>';
+			groupSelect.disabled = !courses || courses.length === 0;
+
+			courses.forEach(function(course) {
+				const option = new Option(course.ID, course.ID);
+				groupSelect.add(option);
+			});
+		}
+		refreshGroupOptions();
+
+		function refreshStudentOptions() {
+			const selectedGroup = groupSelect.value;
 			const students = findGroupStudents(selectedGroup);
             
             // Clear current options in nameSelect
-            nameSelect.innerHTML = '<option selected>Izvēlies sevi</option>';
-            nameSelect.disabled = students.length === 0;
+            nameSelect.innerHTML = '<option selected disabled hidden>Izvēlies sevi</option>';
+            nameSelect.disabled = !students || students.length === 0;
 
             // Populate the nameSelect dropdown with names based on selected group
             students.forEach(function(studentNames) {
@@ -33,7 +44,11 @@ script selection(courses []models.Course) {
                 const option = new Option(fullName, JSON.stringify(studentNames));
                 nameSelect.add(option);
             });
-        });
+		}
+
+        groupSelect.addEventListener('change', refreshStudentOptions);
+
+		refreshStudentOptions();
     });
 }
 
@@ -53,16 +68,16 @@ templ Login(courses []models.Course) {
 							<div>
 								<label for="group" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Grupa</label>
 								<select id="group-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-									<option selected>Izvēlies savu grupu</option>
-									for _, course := range courses {
-										<option value={ course.ID }>{ course.ID }</option>
-									}
+									<option selected disabled hidden>Izvēlies savu grupu</option>
+									// for _, course := range courses {
+									// 	<option value={ course.ID }>{ course.ID }</option>
+									// }
 								</select>
 							</div>
 							<div>
 								<label for="student" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Skolēns</label>
 								<select id="student-select" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-									<option selected>Izvēlies sevi</option>
+									<option selected disabled hidden>Izvēlies sevi</option>
 								</select>
 
 							</div>

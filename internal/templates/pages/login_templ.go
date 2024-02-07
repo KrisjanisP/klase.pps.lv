@@ -15,8 +15,8 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 
 func selection(courses []models.Course) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_selection_c306`,
-		Function: `function __templ_selection_c306(courses){document.addEventListener('DOMContentLoaded', function() {
+		Name: `__templ_selection_9623`,
+		Function: `function __templ_selection_9623(courses){document.addEventListener('DOMContentLoaded', function() {
         const groupSelect = document.getElementById('group-select');
         const nameSelect = document.getElementById('student-select');
 
@@ -28,13 +28,24 @@ func selection(courses []models.Course) templ.ComponentScript {
 			}
 		}
 
-        groupSelect.addEventListener('change', function() {
-            const selectedGroup = this.value;
+		function refreshGroupOptions() {
+			groupSelect.innerHTML = '<option selected disabled hidden>Izvēlies savu grupu</option>';
+			groupSelect.disabled = !courses || courses.length === 0;
+
+			courses.forEach(function(course) {
+				const option = new Option(course.ID, course.ID);
+				groupSelect.add(option);
+			});
+		}
+		refreshGroupOptions();
+
+		function refreshStudentOptions() {
+			const selectedGroup = groupSelect.value;
 			const students = findGroupStudents(selectedGroup);
             
             // Clear current options in nameSelect
-            nameSelect.innerHTML = '<option selected>Izvēlies sevi</option>';
-            nameSelect.disabled = students.length === 0;
+            nameSelect.innerHTML = '<option selected disabled hidden>Izvēlies sevi</option>';
+            nameSelect.disabled = !students || students.length === 0;
 
             // Populate the nameSelect dropdown with names based on selected group
             students.forEach(function(studentNames) {
@@ -45,10 +56,14 @@ func selection(courses []models.Course) templ.ComponentScript {
                 const option = new Option(fullName, JSON.stringify(studentNames));
                 nameSelect.add(option);
             });
-        });
+		}
+
+        groupSelect.addEventListener('change', refreshStudentOptions);
+
+		refreshStudentOptions();
     });}`,
-		Call:       templ.SafeScript(`__templ_selection_c306`, courses),
-		CallInline: templ.SafeScriptInline(`__templ_selection_c306`, courses),
+		Call:       templ.SafeScript(`__templ_selection_9623`, courses),
+		CallInline: templ.SafeScriptInline(`__templ_selection_9623`, courses),
 	}
 }
 
@@ -89,7 +104,7 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <select id=\"group-select\" class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <select id=\"group-select\" class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected disabled hidden>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,52 +113,21 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option></select></div><div><label for=\"student\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, course := range courses {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(course.ID))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(course.ID)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/pages/login.templ`, Line: 57, Col: 49}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div><label for=\"student\" class=\"block mb-2 text-sm font-medium text-gray-900 dark:text-white\">")
+			templ_7745c5c3_Var6 := `Skolēns`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var7 := `Skolēns`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <select id=\"student-select\" disabled class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected disabled hidden>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var7 := `Izvēlies sevi`
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <select id=\"student-select\" disabled class=\"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500\"><option selected>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Var8 := `Izvēlies sevi`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -151,8 +135,8 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var9 := `Parole`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
+			templ_7745c5c3_Var8 := `Parole`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -160,8 +144,8 @@ func Login(courses []models.Course) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var10 := `Pieslēgties`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+			templ_7745c5c3_Var9 := `Pieslēgties`
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
