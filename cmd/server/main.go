@@ -19,6 +19,8 @@ func main() {
 	r.Handle("/static/*", fs) // Use /* to match all files under /static/
 
 	r.Handle("/", templ.Handler(pages.Login()))
+	r.Handle("/home", templ.Handler(pages.Home()))
+
 	fmt.Println("Listening on :3069")
 	err := http.ListenAndServe(":3069", r)
 	log.Println(err)

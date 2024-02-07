@@ -1,0 +1,10 @@
+package pages
+
+import "github.com/KrisjanisP/klase.pps.lv/internal/templates/partials"
+import "github.com/KrisjanisP/klase.pps.lv/internal/templates/shared"
+
+templ Home(){
+    @shared.Page("Home"){
+        @partials.Table()
+    }
+}
