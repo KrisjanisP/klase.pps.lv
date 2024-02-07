@@ -5,18 +5,22 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/KrisjanisP/klase.pps.lv/internal/templates"
+	"github.com/KrisjanisP/klase.pps.lv/internal/templates/pages"
 	"github.com/a-h/templ"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
-	component := templates.Login()
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 
-	http.Handle("/", templ.Handler(component))
+	fs := http.StripPrefix("/static/", http.FileServer(http.Dir("./internal/assets")))
+	r.Handle("/static/*", fs) // Use /* to match all files under /static/
 
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("internal/assets"))))
-
+	r.Handle("/", templ.Handler(pages.Login()))
 	fmt.Println("Listening on :3069")
-	err := http.ListenAndServe(":3069", nil)
+	err := http.ListenAndServe(":3069", r)
 	log.Println(err)
+
 }
