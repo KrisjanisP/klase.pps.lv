@@ -1,0 +1,1 @@
+while sleep 1; do find . -name '*.templ' -or -name '*.go' | entr -cd bash -c "templ generate && go run ./cmd/server"; done
