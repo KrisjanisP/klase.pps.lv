@@ -16,7 +16,8 @@ func NewCompletedRouter() chi.Router {
 
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./internal/assets"))))
 
-	r.Handle("/login", templ.Handler(pages.Login(courses.ListCourses())))
+	msg := "Hello, World!"
+	r.Handle("/login", templ.Handler(pages.Login(courses.ListCourses(), &msg)))
 	r.Post("/login", loginPostHandlerFunc)
 	r.Post("/logout", logoutPostHandlerFunc)
 

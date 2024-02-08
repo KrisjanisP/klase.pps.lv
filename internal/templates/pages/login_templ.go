@@ -14,63 +14,7 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/templates/shared"
 import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 import "github.com/KrisjanisP/klase.pps.lv/internal/templates/partials"
 
-func selection(courses []models.Course) templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_selection_c9ed`,
-		Function: `function __templ_selection_c9ed(courses){document.addEventListener('DOMContentLoaded', function() {
-        const groupSelect = document.getElementById('group-select');
-        const nameSelect = document.getElementById('student-select');
-
-		function findGroupStudents(groupID) {
-			for(var i = 0; i < courses.length; i++) {
-				if (courses[i].ID === groupID) {
-					return courses[i].StudentNames;
-				}
-			}
-		}
-
-		function refreshStudentOptions() {
-			const selectedGroup = groupSelect.value;
-			const students = findGroupStudents(selectedGroup) || [];
-            
-            // Clear current options in nameSelect
-            nameSelect.innerHTML = '<option selected disabled hidden>Izvēlies sevi</option>';
-            nameSelect.disabled = !students || students.length === 0;
-
-            // Populate the nameSelect dropdown with names based on selected group
-            students.forEach(function(studentNames) {
-				let fullName = studentNames[0];
-				for (let i = 1; i < studentNames.length; i++) {
-					fullName += ' ' + studentNames[i];
-				}
-                const option = new Option(fullName, JSON.stringify(studentNames));
-                nameSelect.add(option);
-            });
-		}
-
-		function refreshGroupOptions() {
-			groupSelect.innerHTML = '<option selected disabled hidden>Izvēlies savu grupu</option>';
-			groupSelect.disabled = !courses || courses.length === 0;
-
-			courses.forEach(function(course) {
-				const option = new Option(course.ID, course.ID);
-				groupSelect.add(option);
-			});
-
-			refreshStudentOptions();
-		}
-
-		refreshGroupOptions();
-
-        groupSelect.addEventListener('change', refreshStudentOptions);
-
-    });}`,
-		Call:       templ.SafeScript(`__templ_selection_c9ed`, courses),
-		CallInline: templ.SafeScriptInline(`__templ_selection_c9ed`, courses),
-	}
-}
-
-func Login(courses []models.Course) templ.Component {
+func Login(courses []models.Course, msg *string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -89,23 +33,15 @@ func Login(courses []models.Course) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><div class=\"flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0\"><a href=\"#\" style=\"translate: 0 -200%;\" class=\"absolute flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><div class=\"flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0\"><a href=\"#\" style=\"translate: 0 -200%;\" class=\"absolute flex items-center mb-12 text-2xl font-semibold text-gray-900 dark:text-white\"><image src=\"https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png\" alt=\"PPS logo\" class=\"w-64\"></image></a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = partials.LoginForm().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = partials.LoginCard(courses, msg).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = selection(courses).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

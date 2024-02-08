@@ -4,67 +4,16 @@ import "github.com/KrisjanisP/klase.pps.lv/internal/templates/shared"
 import "github.com/KrisjanisP/klase.pps.lv/internal/models"
 import "github.com/KrisjanisP/klase.pps.lv/internal/templates/partials"
 
-script selection(courses []models.Course) {
-    document.addEventListener('DOMContentLoaded', function() {
-        const groupSelect = document.getElementById('group-select');
-        const nameSelect = document.getElementById('student-select');
 
-		function findGroupStudents(groupID) {
-			for(var i = 0; i < courses.length; i++) {
-				if (courses[i].ID === groupID) {
-					return courses[i].StudentNames;
-				}
-			}
-		}
-
-		function refreshStudentOptions() {
-			const selectedGroup = groupSelect.value;
-			const students = findGroupStudents(selectedGroup) || [];
-            
-            // Clear current options in nameSelect
-            nameSelect.innerHTML = '<option selected disabled hidden>Izvēlies sevi</option>';
-            nameSelect.disabled = !students || students.length === 0;
-
-            // Populate the nameSelect dropdown with names based on selected group
-            students.forEach(function(studentNames) {
-				let fullName = studentNames[0];
-				for (let i = 1; i < studentNames.length; i++) {
-					fullName += ' ' + studentNames[i];
-				}
-                const option = new Option(fullName, JSON.stringify(studentNames));
-                nameSelect.add(option);
-            });
-		}
-
-		function refreshGroupOptions() {
-			groupSelect.innerHTML = '<option selected disabled hidden>Izvēlies savu grupu</option>';
-			groupSelect.disabled = !courses || courses.length === 0;
-
-			courses.forEach(function(course) {
-				const option = new Option(course.ID, course.ID);
-				groupSelect.add(option);
-			});
-
-			refreshStudentOptions();
-		}
-
-		refreshGroupOptions();
-
-        groupSelect.addEventListener('change', refreshStudentOptions);
-
-    });
-}
-
-templ Login(courses []models.Course) {
+templ Login(courses []models.Course, msg *string) {
 	@shared.Page("Hello") {
 		<section>
 			<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-				<a href="#" style="translate: 0 -200%;" class="absolute flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+				<a href="#" style="translate: 0 -200%;" class="absolute flex items-center mb-12 text-2xl font-semibold text-gray-900 dark:text-white">
 					<image src="https://pps.lv/wp-content/uploads/2019/09/PPS_logo_transparent.png" alt="PPS logo" class="w-64"></image>
 				</a>
-				@partials.LoginForm()
+				@partials.LoginCard(courses, msg)
 			</div>
-			@selection(courses)
 		</section>
 	}
 }

@@ -9,7 +9,9 @@ import (
 
 	"github.com/KrisjanisP/klase.pps.lv/internal/config"
 	"github.com/KrisjanisP/klase.pps.lv/internal/models"
+	"github.com/KrisjanisP/klase.pps.lv/internal/services/courses"
 	"github.com/KrisjanisP/klase.pps.lv/internal/services/students"
+	"github.com/KrisjanisP/klase.pps.lv/internal/templates/partials"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -43,14 +45,16 @@ func loginPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
 				authenticatedStudent = &student
 				break
 			} else {
-				http.Error(w, "Invalid password", http.StatusUnauthorized)
+				msg := "Invalid password"
+				partials.LoginCard(courses.ListCourses(), &msg).Render(r.Context(), w)
 				return
 			}
 		}
 	}
 
 	if authenticatedStudent == nil {
-		http.Error(w, "Invalid student", http.StatusUnauthorized)
+		msg := "Invalid student"
+		partials.LoginCard(courses.ListCourses(), &msg).Render(r.Context(), w)
 		return
 	}
 
