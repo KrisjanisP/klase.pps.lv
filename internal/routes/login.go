@@ -45,7 +45,7 @@ func loginPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
 				authenticatedStudent = &student
 				break
 			} else {
-				msg := "Invalid password"
+				msg := "Parole nav pareiza. Mēģiniet vēlreiz."
 				partials.LoginCard(courses.ListCourses(), &msg).Render(r.Context(), w)
 				return
 			}
@@ -80,7 +80,11 @@ func loginPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
 		Expires: expirationTime,
 	})
 
-	http.Redirect(w, r, "/home", http.StatusSeeOther)
+	if r.Header.Get("HX-Request") == "true" {
+		http.Header.Add(w.Header(), "HX-Location", "/home")
+	} else {
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
+	}
 }
 
 func logoutPostHandlerFunc(w http.ResponseWriter, r *http.Request) {
